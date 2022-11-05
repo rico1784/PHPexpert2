@@ -1,4 +1,5 @@
 <?php
+include 'dbconnect.php';
 
 
 class Reservation
@@ -54,7 +55,6 @@ class Reservation
     }
 
 
-
     public function setDateCreation($dc_reservation)
     {
         list($y, $m, $d) = explode('-', $dc_reservation);
@@ -86,6 +86,28 @@ class Reservation
         }
     }
 
+    public function setClientId($client_id)
+    {
+        if (is_int($client_id) and $client_id > 0) {
+            $this->_client_id = $client_id;
+        } else {
+            $this->setError(self::MSG_ERROR_ID);
+        }
+    }
+
+
+
+    public function setChambreId($chambre_id)
+    {
+        if (is_int($chambre_id) and $chambre_id > 0) {
+            $this->_chambre_id = $chambre_id;
+        } else {
+            $this->setError(self::MSG_ERROR_ID);
+        }
+    }
+
+
+
     public function getIdReservation()
     {
         return $this->_id_reservation;
@@ -111,94 +133,58 @@ class Reservation
         return $this->_client_id;
     }
 
-    public function setClientId($client_id)
-    {
-        if (is_int($client_id) and $client_id > 0) {
-            $this->_client_id = $client_id;
-        } else {
-            $this->setError(self::MSG_ERROR_ID);
-        }
-    }
-
     public function getChambreId()
     {
         return $this->_chambre_id;
     }
 
-    public function setChambreId($chambre_id)
-    {
-        if (is_int($chambre_id) and $chambre_id > 0) {
-            $this->_chambre_id = $chambre_id;
-        } else {
-            $this->setError(self::MSG_ERROR_ID);
-        }
-    }
+
 
 
 }
 
 
-class ReserManager
+
+class ReserManager extends db
 {
     private $ADD_RESERVATION = "INSERT INTO reservations (dc_reservation, dd_reservation, df_reservation, client_id, chambre_id) VALUES (:dc_reservation, :dd_reservation, :df_reservation, :client_id, :hotel_id)";
     private $GET_ALL_RESERVATION = "SELECT * FROM reservations";
     private $GET_RESERVATION = "SELECT * FROM reservations WHERE id_reservation = :id_reservation";
     private $DELETE_RESERVATION = "DELETE FROM reservations WHERE id_reservation = :id_reservation";
 
+    private function disconnect()
+    {
+        $this->connect = null;
 
-//Connexion à la DB
+    }
+
 
     public function addReservation(Reservation $reservation)
     {
-        $this->connect();
-        $stmnt = $this->connection->prepare($this->ADD_RESERVATION);
-        $dc_reservation = $reservation->getDateReservation();
-        $dd_reservation = $reservation->getDateDebut();
-        $df_reservation = $reservation->getDateFin();
-        $client_id = $reservation->getClientId();
-        $chambre_id = $reservation->getChambreId();
+        $stmnt = $this->connect()->prepare($this->ADD_RESERVATION);
+        $dc_reservation = $reservation->setDateReservation();
+        $dd_reservation = $reservation->setDateDebut();
+        $df_reservation = $reservation->setDateFin();
+        $client_id = $reservation->setClientId();
+        $chambre_id = $reservation->setChambreId();
         $stmnt->bindParam(':datereservation', $dc_reservation);
         $stmnt->bindParam(':datedebut', $dd_reservation);
         $stmnt->bindParam(':datefin', $df_reservation);
         $stmnt->bindParam(':clientid', $client_id);
         $stmnt->bindParam(':chambreid', $chambre_id);
         $stmnt->execute();
-        $this->disconnect();
+
 
     }
 
-    private function connect()
-    {
-        $dbURL = "mysql:host=127.0.0.1";
-        $dbName = "reshotels";
-        $dbUsername = "root";
-        $dbPassword = "";
-        $dbCharset = "utf8";
 
-        try {
-            $this->connection = new PDO($dbURL . ";dbname=" . $dbName . ";charset" . $dbCharset, $dbUsername, $dbPassword);
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            return $e;
-        }
-
-    }
-
-//    -------------------------------------
-
-    private function disconnect()
-    {
-        $this->connection = null;
-
-    }
 
     public function getReservation($id_reservation)
     {
-        $this->connect();
         if (empty($id_reservation)) {
-            $stmnt = $this->connection->prepare($this->GET_ALL_RESERVATION);
+            $stmnt = $this->connect()->prepare($this->GET_ALL_RESERVATION);
         } elseif (is_numeric($id_reservation)) {
-            $stmnt = $this->connection->prepare($this->GET_RESERVATION);
+            $stmnt = $this->connect()->prepare($this->GET_RESERVATION);
             $stmnt->bindParam(':id_reservation', $id_reservation);
         }
         $stmnt->execute();
@@ -211,12 +197,10 @@ class ReserManager
 
     public function deleteReservation($id_reservation)
     {
-        $this->connect();
-        $stmnt = $this->connection->prepare($this->DELETE_RESERVATION);
+        $stmnt = $this->connect()->prepare($this->DELETE_RESERVATION);
         $stmnt->bindParam(':id_reservation', $id_reservation);
         $stmnt->execute();
         $count = $stmnt->rowCount();
-        $this->disconnect();
         return $count;
     }
 
