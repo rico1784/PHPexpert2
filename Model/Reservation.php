@@ -3,19 +3,20 @@
 
 class Reservation
 {
-    const MSG_ERROR_ID = 'ID doit être un entier.';
-    const MSG_ERROR_DATE = 'Date doit être au format YYYY-MM-DD';
-    const MSG_ERROR_END = 'L\'objet n\'a pas pu être créé';
-    protected static $_error;
     protected $_id_reservation;
     protected $_dc_reservation;
-
-    //Déclaration de l'attribut statique $error
     protected $_dd_reservation;
-    //Déclaration des messages d'erreur dans les constantes
     protected $_df_reservation;
     protected $_client_id;
     protected $_chambre_id;
+
+    //Déclaration de l'attribut statique $error
+    protected static $_error;
+
+    //Déclaration des messages d'erreur dans les constantes
+    const MSG_ERROR_ID = 'ID doit être un entier.';
+    const MSG_ERROR_DATE = 'Date doit être au format YYYY-MM-DD';
+    const MSG_ERROR_END = 'L\'objet n\'a pas pu être créé';
 
     public function __construct(array $data)
     {
@@ -33,6 +34,10 @@ class Reservation
     }
 
     //Gestion des ereurs
+    public function setError($msg)
+    {
+        self::$error = $msg;
+    }
 
     public function getError()
     {
@@ -48,10 +53,7 @@ class Reservation
         }
     }
 
-    public function setError($msg)
-    {
-        self::$error = $msg;
-    }
+
 
     public function setDateCreation($dc_reservation)
     {
