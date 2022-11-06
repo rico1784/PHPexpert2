@@ -89,6 +89,29 @@ class Hotels
 
 }
 
+class HotelsManager extends dbconnect{
+
+
+    private $LIST_HOTEL = "SELECT ho.nom_hotel, ho.adresse_hotel, COUNT(ch.id_chambre) AS Nbre_chambre FROM  hotels ho INNER JOIN chambres ch on ho.id_hotel = ch.hotel_id
+                            GROUP BY nom_hotel";
+
+
+
+
+
+
+    public function listHotel(){
+
+        $stmnt = $this->connect()->prepare($this->LIST_HOTEL);
+        $stmnt->execute();
+        while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $row;
+        }
+        return $result;
+
+    }
+
+}
 
 
 

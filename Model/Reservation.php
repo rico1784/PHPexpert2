@@ -2,7 +2,6 @@
 include 'dbconnect.php';
 
 
-
 class Reservation
 {
     protected $_id_reservation;
@@ -151,7 +150,9 @@ class ReserManager extends dbconnect
     private $GET_ALL_RESERVATION = "SELECT * FROM reservations";
     private $GET_RESERVATION = "SELECT * FROM reservations WHERE id_reservation = :id_reservation";
     private $DELETE_RESERVATION = "DELETE FROM reservations WHERE id_reservation = :id_reservation";
-
+    private $LIST_HOTEL_CHAMBRES = "SELECT ho.nom_hotel, ho.adresse_hotel, COUNT(ch.id_chambre) AS Nbre_chambre FROM  hotels ho INNER JOIN chambres ch on ho.id_hotel = ch.hotel_id
+                            GROUP BY nom_hotel";
+    private $LIST_HOTEL = "SELECT nom_hotel, id_hotel FROM hotels";
 
 
 
@@ -200,6 +201,28 @@ class ReserManager extends dbconnect
         return $count;
     }
 
+    public function listHotelChambre(){
+
+    $stmnt = $this->connect()->prepare($this->LIST_HOTEL_CHAMBRES);
+    $stmnt->execute();
+    while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
+        $result[] = $row;
+    }
+    return $result;
 
 }
 
+    public function listHotel(){
+
+        $stmnt = $this->connect()->prepare($this->LIST_HOTEL);
+        $stmnt->execute();
+        while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $row;
+        }
+        return $result;
+
+    }
+
+
+
+}

@@ -1,5 +1,6 @@
 <?php
-require_once("./Model/Reservation.php");
+require_once("Model/Reservation.php");
+
 ?>
 
 <!doctype html>
@@ -24,13 +25,13 @@ require_once("./Model/Reservation.php");
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Accueil</a>
+                            <a class="nav-link active " href="#">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"href="hotels.php">Liste des hotels</a>
+                            <a class="nav-link" href="hotels.php">Liste des hotels</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"href="reservations.php" >Réserver un hotel</a>
+                            <a class="nav-link" href="reservations.php" >Réserver un hotel</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
@@ -45,14 +46,14 @@ require_once("./Model/Reservation.php");
     <main class="">
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
-        <?php
-        $id_reservation = 1;
+        <h1 class="accueil">TONhotel.com</h1>
+        <h2 class="accueil">La recherche n°1 des hôtels</h2>
+        <div class="accueil">
+            <button type="button" class=" btn btn-primary"><a href="hotels.php">Liste des hôtels et chambres libres</a></button>
+        </div>
 
-        $reservation =  new ReserManager();
 
-        $stmnt = $reservation->getReservation($id_reservation);
-        print_r($stmnt) ;
-        ?>
+
 
 
 

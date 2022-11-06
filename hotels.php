@@ -1,5 +1,6 @@
 <?php
-require_once("./Model/Reservation.php");
+require_once("Model/Reservation.php");
+
 ?>
 
 <!doctype html>
@@ -8,6 +9,7 @@ require_once("./Model/Reservation.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css"
 
 
@@ -27,10 +29,10 @@ require_once("./Model/Reservation.php");
                             <a class="nav-link" aria-current="page" href="index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="hotels.php">Liste des hotels</a>
+                            <a class="nav-link active " href="hotels.php">Liste des hotels</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="reservations.php" >Réserver un hotel</a>
+                            <a class="nav-link " href="reservations.php" >Réserver un hotel</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
@@ -46,13 +48,40 @@ require_once("./Model/Reservation.php");
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
         <?php
-        $id_reservation = 1;
+        $ReserManager =  new ReserManager();
 
-        $reservation =  new ReserManager();
-
-        $stmnt = $reservation->getReservation($id_reservation);
-        print_r($stmnt) ;
         ?>
+
+
+        <table class="table center mt-5 mb-4">
+            <thead>
+            <tr>
+                <th scope="col">Nom de l'hôtel</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Nombre de chambres</th>
+                <th scope="col">Réserver une chambre</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $ReserManager =  new ReserManager();
+            //Récupération des hôtels
+            $stmnt = $ReserManager->listHotelChambre();
+
+            foreach ($stmnt as $value) {
+                ?>
+                <tr>
+
+                    <td><?php echo $value['nom_hotel']; ?></td>
+                    <td><?php echo $value['adresse_hotel']; ?></td>
+                    <td><?php echo $value['Nbre_chambre']; ?></td>
+                    <td><a></a>Réserver</td>
+
+
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
 
 
 
@@ -121,7 +150,7 @@ require_once("./Model/Reservation.php");
 
 <script src="js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+<script src="js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -4,13 +4,24 @@ main {
 }
 
 h1 {
-    margin-top: 50px;
+    font-size: 3em;
+}
+
+a{
+    text-decoration: none;
+    color: #ffffff;
+
 
 }
 
+a:hover{
+    text-decoration: none;
+    color: #35dcb5;
+}
 
-
-
+th ,tr{
+    text-align: center;
+}
 
 
 
@@ -20,3 +31,18 @@ h1 {
 
 
 }
+
+/*Style commun aux différentes page*/
+
+.accueil{
+    margin: 10px auto 0 auto;
+    width: 400px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.center{
+    margin: 0 auto;
+    width: 80%;
+}
+
