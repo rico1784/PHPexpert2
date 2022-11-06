@@ -91,7 +91,7 @@ class Hotels
 
 class HotelManager extends db
 {
-
+r
 
 
 }
