@@ -2,6 +2,7 @@
 include 'dbconnect.php';
 
 
+
 class Reservation
 {
     protected $_id_reservation;
@@ -144,19 +145,14 @@ class Reservation
 }
 
 
-
-class ReserManager extends db
+class ReserManager extends dbconnect
 {
     private $ADD_RESERVATION = "INSERT INTO reservations (dc_reservation, dd_reservation, df_reservation, client_id, chambre_id) VALUES (:dc_reservation, :dd_reservation, :df_reservation, :client_id, :hotel_id)";
     private $GET_ALL_RESERVATION = "SELECT * FROM reservations";
     private $GET_RESERVATION = "SELECT * FROM reservations WHERE id_reservation = :id_reservation";
     private $DELETE_RESERVATION = "DELETE FROM reservations WHERE id_reservation = :id_reservation";
 
-    private function disconnect()
-    {
-        $this->connect = null;
 
-    }
 
 
     public function addReservation(Reservation $reservation)
