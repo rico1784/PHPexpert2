@@ -7,14 +7,13 @@ h1 {
     font-size: 3em;
 }
 
-a{
+.navbar a{
     text-decoration: none;
     color: #ffffff;
 
 
 }
-
-a:hover{
+.navbar a:hover{
     text-decoration: none;
     color: #35dcb5;
 }
@@ -30,6 +29,12 @@ th ,tr{
     width: 100%;
 
 
+}
+
+
+footer{
+
+    margin-top: 150px;
 }
 
 /*Style commun aux différentes page*/

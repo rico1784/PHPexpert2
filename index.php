@@ -1,5 +1,5 @@
 <?php
-require_once("Model/Reservation.php");
+require_once("Model/model.php");
 
 ?>
 
@@ -43,7 +43,7 @@ require_once("Model/Reservation.php");
         </nav>
     </header>
 
-    <main class="">
+    <main>
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
         <h1 class="accueil">TONhotel.com</h1>

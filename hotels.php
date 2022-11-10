@@ -1,5 +1,6 @@
 <?php
-require_once("Model/Reservation.php");
+require_once("Model/model.php");
+include('app/getReservation.php');
 
 ?>
 
@@ -47,11 +48,6 @@ require_once("Model/Reservation.php");
     <main class="">
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
-        <?php
-        $ReserManager =  new ReserManager();
-
-        ?>
-
 
         <table class="table center mt-5 mb-4">
             <thead>
@@ -59,11 +55,13 @@ require_once("Model/Reservation.php");
                 <th scope="col">Nom de l'hôtel</th>
                 <th scope="col">Adresse</th>
                 <th scope="col">Nombre de chambres</th>
-                <th scope="col">Réserver une chambre</th>
             </tr>
             </thead>
             <tbody>
             <?php
+
+            try {
+
             $ReserManager =  new ReserManager();
             //Récupération des hôtels
             $stmnt = $ReserManager->listHotelChambre();
@@ -75,11 +73,16 @@ require_once("Model/Reservation.php");
                     <td><?php echo $value['nom_hotel']; ?></td>
                     <td><?php echo $value['adresse_hotel']; ?></td>
                     <td><?php echo $value['Nbre_chambre']; ?></td>
-                    <td><a></a>Réserver</td>
+
 
 
                 </tr>
-            <?php } ?>
+            <?php }
+            }catch (Exception $e){
+                echo '<tr><td colspan="3" class="text-danger">Erreur :</td></tr>';
+                echo '<tr><td colspan="3" class="text-danger">'.$e->getMessage().'</td></tr>';
+            }
+            ?>
             </tbody>
         </table>
 

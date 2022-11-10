@@ -1,5 +1,6 @@
 <?php
-require_once("./Model/Reservation.php");
+require_once("./Model/model.php");
+
 ?>
 
 <!doctype html>
@@ -45,12 +46,14 @@ require_once("./Model/Reservation.php");
     <main class="">
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
-        <form method="post" action="process.php" class="row g-3 mt-5 mb-5 center">
+        <form method="post" action="app/getReservation.php" class="row g-3 mt-5 mb-5 center">
             <div class="col-md-3">
                 <label for="inputState" class="form-label">Sélection de l'hôtel</label>
-                <select id="inputState" class="form-select">
-                    <option value="">Sélectionner hôtels</option>
+                <select name="id_hotel" class="form-select">
+                    <option>Sélectionner hôtels</option>
                     <?php
+                    try {
+
                     $ReserManager =  new ReserManager();
                     //Récupération des hôtels
                     $stmnt = $ReserManager->listHotel();
@@ -60,49 +63,40 @@ require_once("./Model/Reservation.php");
                         <option value="<?php echo $value['id_hotel']; ?>"><?php echo $value['nom_hotel']; ?></option>
 
 
-                    <?php } ?>
+                    <?php }
+                    }catch (Exception $e){
+                        echo '<tr><td colspan="3" class="text-danger">Erreur :</td></tr>';
+                        echo '<tr><td colspan="3" class="text-danger">'.$e->getMessage().'</td></tr>';
+                    }
+                    ?>
 
                 </select>
             </div>
 
             <div class="col-md-3">
                 <label for="dd_reservation" class="form-label">Date début</label>
-                <input type="date" class="form-control" id="dd_reservation">
+                <input type="date" class="form-control" name="dd_reservation">
             </div>
 
             <div class="col-md-3">
                 <label for="df_reservation" class="form-label">Date fin</label>
-                <input type="date" class="form-control" id="df_reservation">
+                <input type="date" class="form-control" name="df_reservation">
+            </div>
+
+            <div class="col-md-6">
+                <label for="text" class="form-label">Nom</label>
+                <input type="text" class="form-control" name="nom">
+            </div>
+
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email">
             </div>
 
 
             <div class="col-12">
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" class="btn btn-primary">Réserver une chambre</button>
             </div>
-
-
-
-
-        </form>
-
-        <form method="post" action="process.php" class="row g-3 mt-5 mb-5 center">
-            <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="inputPassword4">
-            </div>
-
-            <div class="col-md-6">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
-            </div>
-
-
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Sign in</button>
-            </div>
-        </form>
-
-
 
     </main>
 
@@ -110,6 +104,11 @@ require_once("./Model/Reservation.php");
 
 
     <footer class="bg-dark text-center text-white">
+        <?php
+        if(!empty($stmnt)){
+            var_dump($stmnt) ;
+        }
+        ?>
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <!-- Section: Form -->
