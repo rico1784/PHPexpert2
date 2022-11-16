@@ -1,6 +1,5 @@
 <?php
 require_once("Model/model.php");
-include('app/getReservation.php');
 
 ?>
 

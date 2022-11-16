@@ -1,21 +1,27 @@
 <?php
 include '../Model/model.php';
 
-$email_client = 'test@rte.ch';
-$nom_client = 'test1';
 
-if (isset($_POST["id_hotel"]) && !empty($_POST["id_hotel"])) {
+
+if (isset($_POST["id_hotel"]) && isset($_POST["nom"]) && isset($_POST["email"]) && !empty($_POST["id_hotel"]) && !empty($_POST["nom"]) && !empty($_POST["email"])) {
     $id_hotel = $_POST["id_hotel"];
     $dd_reservation = $_POST["dd_reservation"];
     $df_reservation = $_POST["df_reservation"];
+    $email_client = $_POST["nom"];
+    $nom_client = $_POST["email"];
 
 //Check des hotels avec des chambres de libres
     $ReserManager =  new ReserManager();
-    $stmnt = $ReserManager->checkReservation($id_hotel, $dd_reservation, $df_reservation);
 
-    $idHotel = $stmnt[0]['hotel_id'];
-    $chambre_id = (int)$stmnt[0]['id_chambre'];
-    echo $idHotel;
+    $stmnt = $ReserManager->checkReservation($id_hotel, $dd_reservation, $df_reservation);
+    if ($stmnt){
+        $idHotel = $stmnt[0]['hotel_id'];
+        $chambre_id = (int)$stmnt[0]['id_chambre'];
+    }else{
+        exit(header("location: ../reservations.php?error=1"));
+
+    }
+
 
 
 //    Enregistrement de la réservation de la 1ère chambre de libre
@@ -72,11 +78,11 @@ if (isset($_POST["id_hotel"]) && !empty($_POST["id_hotel"])) {
 
 
 
-//    header("location: ../reservations.php");
+ header("location: ../reservations.php");
 
 
 
 
 
-}
+}header("location: ../reservations.php?error=2");
 

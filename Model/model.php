@@ -224,10 +224,11 @@ class ReserManager
         $stmnt->bindParam(':client_id', $client_id);
         $stmnt->bindParam(':chambre_id', $chambre_id);
         $stmnt->execute();
+        $this->disconnect();
 
 
     }
-
+//utlil
     public function checkReservation($id_hotel, $dd_reservation, $df_reservation)
     {
         $this->connect();
@@ -236,10 +237,21 @@ class ReserManager
         $stmnt->bindParam(':dd_reservation', $dd_reservation);
         $stmnt->bindParam(':df_reservation', $df_reservation);
         $stmnt->execute();
-        while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $row;
+        if($stmnt) {
+            while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
+                $result[] = $row;
+                return $result;
+            }
+
         }
-        return $result;
+        else{
+            $error = 'test not found';
+            return $error;
+
+
+        }
+
+
     }
 
 
@@ -271,7 +283,7 @@ class ReserManager
         $count = $stmnt->rowCount();
         return $count;
     }
-
+//utlil
     public function listHotelChambre(){
 
         $this->connect();
@@ -283,7 +295,7 @@ class ReserManager
     return $result;
 
 }
-
+//util
     public function listHotel(){
 
         $this->connect();

@@ -47,11 +47,13 @@ require_once("./Model/model.php");
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
         <form method="post" action="app/getReservation.php" class="row g-3 mt-5 mb-5 center">
+
             <div class="col-md-3">
                 <label for="inputState" class="form-label">Sélection de l'hôtel</label>
                 <select name="id_hotel" class="form-select">
                     <option>Sélectionner hôtels</option>
                     <?php
+
                     try {
 
                     $ReserManager =  new ReserManager();
@@ -67,30 +69,44 @@ require_once("./Model/model.php");
                     }catch (Exception $e){
                         echo '<tr><td colspan="3" class="text-danger">Erreur :</td></tr>';
                         echo '<tr><td colspan="3" class="text-danger">'.$e->getMessage().'</td></tr>';
+
                     }
+
+
                     ?>
+
+
+
 
                 </select>
             </div>
 
             <div class="col-md-3">
                 <label for="dd_reservation" class="form-label">Date début</label>
-                <input type="date" class="form-control" name="dd_reservation">
+                <input type="date" class="form-control" name="dd_reservation" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">S'il vous plaît remplir ce champ.</div>
             </div>
 
             <div class="col-md-3">
                 <label for="df_reservation" class="form-label">Date fin</label>
-                <input type="date" class="form-control" name="df_reservation">
+                <input type="date" class="form-control" name="df_reservation" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">S'il vous plaît remplir ce champ.</div>
             </div>
 
             <div class="col-md-6">
                 <label for="text" class="form-label">Nom</label>
-                <input type="text" class="form-control" name="nom">
+                <input type="text" class="form-control" name="nom" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">S'il vous plaît remplir ce champ.</div>
             </div>
 
             <div class="col-md-6">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email">
+                <input type="email" class="form-control" name="email" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">S'il vous plaît remplir ce champ.</div>
             </div>
 
 
@@ -99,16 +115,21 @@ require_once("./Model/model.php");
             </div>
 
     </main>
+<?php
+if (isset($_GET["error"])){
+    if($_GET["error"] == 1){
+        echo '<h3 class="center">Pas de chambre de libre pour cet hôtel, veuillez en choisir un autre</h3>';
+    }elseif ($_GET["error"] == 2){
+         echo '<h3 class="center">Votre chambre est réservé</h3>';
+    }
+}
 
+?>
 
 
 
     <footer class="bg-dark text-center text-white">
-        <?php
-        if(!empty($stmnt)){
-            var_dump($stmnt) ;
-        }
-        ?>
+
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <!-- Section: Form -->
