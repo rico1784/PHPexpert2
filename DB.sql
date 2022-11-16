@@ -5,11 +5,11 @@ CREATE DATABASE IF NOT EXISTS reshotels;
 #-- Création de la table hotels
 Use reshotels;
 CREATE TABLE IF NOT EXISTS hotels (
-                                      id_hotel int(10) unsigned NOT NULL AUTO_INCREMENT,
-                                      nom_hotel varchar(50) DEFAULT NULL,
-                                      adress_hotel varchar(150) DEFAULT NULL,
-                                      PRIMARY KEY(id_hotel)
-)
+    id_hotel int(10) unsigned NOT NULL AUTO_INCREMENT,
+    nom_hotel varchar(50) DEFAULT NULL,
+    adresse_hotel varchar(150) DEFAULT NULL,
+    PRIMARY KEY(id_hotel)
+    )
     ENGINE=InnoDB DEFAULT CHARSET=utf8
 ;
 
@@ -84,11 +84,11 @@ INSERT INTO reshotels.chambres (id_chambre, num_chambre, hotel_id) VALUES
 #-- -----------------------Clients--------------------------------
 #-- Création de la table clients
 CREATE TABLE IF NOT EXISTS clients(
-                                      id_client int(10) unsigned NOT NULL AUTO_INCREMENT,
-                                      nom_client varchar(50) DEFAULT NULL,
-                                      email_client varchar(50) DEFAULT NULL,
-                                      PRIMARY KEY(id_client)
-)
+    id_client int(10) unsigned NOT NULL AUTO_INCREMENT,
+    nom_client varchar(50) DEFAULT NULL,
+    email_client varchar(50) DEFAULT NULL,
+    PRIMARY KEY(id_client)
+    )
     ENGINE=InnoDB DEFAULT CHARSET=utf8
 ;
 
@@ -97,14 +97,14 @@ CREATE TABLE IF NOT EXISTS clients(
 #-- -----------------------Réservations--------------------------------
 #-- Création de la table reservations
 CREATE TABLE IF NOT EXISTS reservations (
-                                            id_reservation int(10) unsigned NOT NULL AUTO_INCREMENT,
-                                            dc_reservation date NOT NULL DEFAULT '0000-00-00',
-                                            dd_reservation date NOT NULL DEFAULT '0000-00-00',
-                                            df_reservation date NOT NULL DEFAULT '0000-00-00',
-                                            client_id int(10) DEFAULT NULL,
-                                            chambre_id int(10) DEFAULT NULL,
-                                            PRIMARY KEY(id_reservation)
-)
+    id_reservation int(10) unsigned NOT NULL AUTO_INCREMENT,
+    dc_reservation date NOT NULL,
+    dd_reservation date NOT NULL,
+    df_reservation date NOT NULL,
+    client_id int(10) DEFAULT NULL,
+    chambre_id int(10) DEFAULT NULL,
+    PRIMARY KEY(id_reservation)
+    )
     ENGINE=InnoDB DEFAULT CHARSET=utf8
 ;
 
