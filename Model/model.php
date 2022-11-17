@@ -19,7 +19,8 @@ class dbconnect
         return $pdo;
     }
 //    Déconnexion de la base de données
-    protected function disconnect(){
+    protected function disconnect()
+    {
         $pdo = NULL;
     }
 

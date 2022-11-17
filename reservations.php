@@ -6,11 +6,13 @@ require_once("./Model/model.php");
 <!doctype html>
 <html lang="fr">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css"
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Réservations</title>
 
 
 </head>
@@ -29,10 +31,10 @@ require_once("./Model/model.php");
                             <a class="nav-link" href="index.php">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"href="hotels.php">Liste des hotels</a>
+                            <a class="nav-link"href="hotels.php">Liste des hôtels</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="reservations.php" >Réserver un hotel</a>
+                            <a class="nav-link active" aria-current="page" href="reservations.php" >Réserver un hôtel</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
@@ -121,7 +123,7 @@ require_once("./Model/model.php");
                     if($_GET["error"] == 1){
                         echo '<h3 class="center">Pas de chambre de libre pour cet hôtel, veuillez en choisir un autre</h3>';
                     }elseif ($_GET["error"] == 2){
-                        echo '<h3 class="center">Votre chambre est réservé</h3>';
+                        echo '<h3 class="center">Votre chambre est réservée</h3>';
                     }
                 }
 

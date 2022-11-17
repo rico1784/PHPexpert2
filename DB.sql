@@ -53,7 +53,6 @@ INSERT INTO reshotels.chambres (id_chambre, num_chambre, hotel_id) VALUES
                                                                        (10, 18, 2),
                                                                        (11, 21, 7),
                                                                        (12, 10, 8),
-                                                                       (13, 1, 9),
                                                                        (14, 1, 5),
                                                                        (15, 22, 1),
                                                                        (16, 23, 2),
@@ -63,7 +62,6 @@ INSERT INTO reshotels.chambres (id_chambre, num_chambre, hotel_id) VALUES
                                                                        (20, 23, 6),
                                                                        (21, 23, 7),
                                                                        (22, 22, 8),
-                                                                       (23, 26, 9),
                                                                        (24, 25, 4),
                                                                        (25, 24, 3),
                                                                        (26, 2, 1),
@@ -75,7 +73,6 @@ INSERT INTO reshotels.chambres (id_chambre, num_chambre, hotel_id) VALUES
                                                                        (32, 6, 7),
                                                                        (33, 6, 8),
                                                                        (34, 7, 3),
-                                                                       (35, 4, 9),
                                                                        (36, 6, 3)
 ;
 
@@ -107,44 +104,3 @@ CREATE TABLE IF NOT EXISTS reservations (
     )
     ENGINE=InnoDB DEFAULT CHARSET=utf8
 ;
-
-
-
-
-
-# ------------------requetes SQL-------------------------------
-
-SELECT ho.nom_hotel, ch.num_chambre
-FROM  hotels ho
-          INNER JOIN chambres ch on ho.id_hotel = ch.hotel_id
-          LEFT JOIN reservations re on ch.id_chambre = re.chambre_id
-WHERE re.dd_reservation IS NULL
-   OR re.df_reservation >= '2022-11-07'
-    AND ho.id_hotel = 2
-
-;
-
-SELECT t1.id_chambre, t1.nom_hotel
-FROM (
-         SELECT ho.nom_hotel, ch.num_chambre, ch.id_chambre
-         FROM  hotels ho
-                   INNER JOIN chambres ch on ho.id_hotel = ch.hotel_id
-                   INNER JOIN reservations res on ch.id_chambre = res.chambre_id
-     )t1
-
-
-
-SELECT *
-FROM chambres ch
-         LEFT JOIN reservations re on ch.id_chambre = re.chambre_id
-         LEFT JOIN hotels ho on ch.hotel_id = ho.id_hotel
-WHERE re.dd_reservation IS NULL OR
-    (re.dd_reservation <> '2022-11-07' AND re.df_reservation >= '2022-11-07')
-
-HAVING ch.hotel_id = 3
-;
-
-SELECT nom_hotel
-FROM hotels
-
-

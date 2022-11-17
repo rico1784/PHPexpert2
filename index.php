@@ -10,8 +10,8 @@ require_once("Model/model.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css"
-
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Accueil</title>
 
 </head>
 <body>
@@ -29,10 +29,10 @@ require_once("Model/model.php");
                             <a class="nav-link active " href="#">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="hotels.php">Liste des hotels</a>
+                            <a class="nav-link" href="hotels.php">Liste des hôtels</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="reservations.php" >Réserver un hotel</a>
+                            <a class="nav-link" href="reservations.php" >Réserver un hôtel</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
