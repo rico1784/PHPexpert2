@@ -7,8 +7,9 @@ if (isset($_POST["id_hotel"]) && isset($_POST["nom"]) && isset($_POST["email"]) 
     $id_hotel = $_POST["id_hotel"];
     $dd_reservation = $_POST["dd_reservation"];
     $df_reservation = $_POST["df_reservation"];
-    $email_client = $_POST["nom"];
-    $nom_client = $_POST["email"];
+    $nom_client = $_POST["nom"];
+    $email_client = $_POST["email"];
+
 
 //Check des hotels avec des chambres de libres
     $ReserManager =  new ReserManager();

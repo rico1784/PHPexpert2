@@ -9,6 +9,7 @@ require_once("./Model/model.php");
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css"
 
 
@@ -114,17 +115,21 @@ require_once("./Model/model.php");
                 <button type="submit" class="btn btn-primary">Réserver une chambre</button>
             </div>
 
-    </main>
-<?php
-if (isset($_GET["error"])){
-    if($_GET["error"] == 1){
-        echo '<h3 class="center">Pas de chambre de libre pour cet hôtel, veuillez en choisir un autre</h3>';
-    }elseif ($_GET["error"] == 2){
-         echo '<h3 class="center">Votre chambre est réservé</h3>';
-    }
-}
+            <div>
+                <?php
+                if (isset($_GET["error"])){
+                    if($_GET["error"] == 1){
+                        echo '<h3 class="center">Pas de chambre de libre pour cet hôtel, veuillez en choisir un autre</h3>';
+                    }elseif ($_GET["error"] == 2){
+                        echo '<h3 class="center">Votre chambre est réservé</h3>';
+                    }
+                }
 
-?>
+                ?>
+            </div>
+
+    </main>
+
 
 
 
