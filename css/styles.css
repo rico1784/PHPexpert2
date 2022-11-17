@@ -7,13 +7,13 @@ h1 {
     font-size: 3em;
 }
 
-.navbar a{
+.navbar, button a{
     text-decoration: none;
     color: #ffffff;
 
 
 }
-.navbar a:hover{
+.navbar, button a:hover{
     text-decoration: none;
     color: #35dcb5;
 }
@@ -49,5 +49,9 @@ footer{
 .center{
     margin: 0 auto;
     width: 80%;
+}
+
+.mt50{
+    margin-top: 50px;
 }
 

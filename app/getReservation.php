@@ -28,10 +28,9 @@ if (isset($_POST["id_hotel"]) && isset($_POST["nom"]) && isset($_POST["email"]) 
 //    Enregistrement de la réservation de la 1ère chambre de libre
 
     if(isset($idHotel)){
-
         $clientManager =  new clientManager();
 
-//    Controle si déjà client
+        //   Controle si déjà client
         $stmnt = $clientManager->getIdClient($email_client);
 
         if(empty($stmnt)){
@@ -42,14 +41,7 @@ if (isset($_POST["id_hotel"]) && isset($_POST["nom"]) && isset($_POST["email"]) 
             $IdClient = (int)$stmnt[0]['id_client'];
         }
 
-
-
-
-
-
-//        Récupération de la 1er chambre libre
-
-
+        //   Récupération de la 1er chambre libre
 
         $dc_reservation = date("Y-m-d");
         $reservation_data = array(
@@ -61,29 +53,15 @@ if (isset($_POST["id_hotel"]) && isset($_POST["nom"]) && isset($_POST["email"]) 
 
         );
 
+
+        //   Ajout de la réservation dans la DB
         $Reservation = new Reservation($reservation_data);
-
         $Manager = NEW ReserManager();
-
         $Manager->addReservation($Reservation);
 
 
 
-
-
-
-
-
     }
-
-
-
-
- header("location: ../reservations.php");
-
-
-
-
 
 }header("location: ../reservations.php?error=2");
 

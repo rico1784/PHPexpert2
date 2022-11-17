@@ -7,6 +7,10 @@ class dbconnect
     private $pass = '';
     private $dbname = 'reshotels';
 
+    //Déclaration de l'attribut statique $pdo
+    private static $pdo;
+
+    //Connexion à la base de données
     protected function connect()
     {
         $dsn = 'mysql:host  =' . $this->host . ';dbname=' . $this->dbname;
@@ -14,10 +18,13 @@ class dbconnect
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     }
+//    Déconnexion de la base de données
+    protected function disconnect(){
+        $pdo = NULL;
+    }
 
 
 }
-
 
 
 class Reservation
@@ -63,6 +70,7 @@ class Reservation
         return self::$error;
     }
 
+    //Setter
     public function setId($id_reservation)
     {
         if (is_int($id_reservation) and $id_reservation > 0) {
@@ -125,7 +133,7 @@ class Reservation
     }
 
 
-
+//Getter
     public function getIdReservation()
     {
         return $this->_id_reservation;
@@ -163,49 +171,19 @@ class Reservation
 
 
 
-class ReserManager
+class ReserManager extends dbconnect
 {
 
     private $ADD_RESERVATION = "INSERT INTO reservations (dc_reservation, dd_reservation, df_reservation, client_id, chambre_id) VALUES (:dc_reservation, :dd_reservation, :df_reservation, :client_id, :chambre_id)";
     private $CHECK_RESERVATION = "SELECT ch.id_chambre, ch.num_chambre, ch.hotel_id, re.dd_reservation, re.df_reservation FROM chambres ch LEFT JOIN reservations re on ch.id_chambre = re.chambre_id LEFT JOIN hotels ho on ch.hotel_id = ho.id_hotel WHERE re.dd_reservation IS NULL OR (re.dd_reservation <> :dd_reservation AND re.df_reservation >= :df_reservation)
                                     HAVING ch.hotel_id = :id_hotel";
 
-    private $GET_ALL_RESERVATION = "SELECT * FROM reservations";
-    private $GET_RESERVATION = "SELECT * FROM reservations WHERE id_reservation = :id_reservation";
-    private $DELETE_RESERVATION = "DELETE FROM reservations WHERE id_reservation = :id_reservation";
     private $LIST_HOTEL_CHAMBRES = "SELECT ho.id_hotel, ho.nom_hotel, ho.adresse_hotel, COUNT(ch.id_chambre) AS Nbre_chambre FROM  hotels ho INNER JOIN chambres ch on ho.id_hotel = ch.hotel_id
                                      GROUP BY nom_hotel";
     private $LIST_HOTEL = "SELECT nom_hotel, id_hotel FROM hotels";
 
 
-    private function connect()
-    {
-        $dbURL = "mysql:host=127.0.0.1";
-        $dbName = "reshotels";
-        $dbUsername = "root";
-        $dbPassword = "";
-        $dbCharset = "utf8";
-
-        try {
-            $this->connection = new PDO($dbURL . ";dbname=" . $dbName . ";charset" . $dbCharset, $dbUsername, $dbPassword);
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            return $e;
-        }
-
-    }
-
-    private function disconnect()
-    {
-        $this->connection = null;
-
-    }
-//    -------------------------------------
-
-
-
-
-
+    //Ajout d'une réservation
     public function addReservation(Reservation $reservation)
     {
 
@@ -216,23 +194,25 @@ class ReserManager
         $chambre_id = $reservation->getChambreId();
 
 
-        $this->connect();
-        $stmnt = $this->connection->prepare($this->ADD_RESERVATION);
+        $stmnt = $this->connect()->prepare($this->ADD_RESERVATION);
         $stmnt->bindParam(':dc_reservation', $dc_reservation);
         $stmnt->bindParam(':dd_reservation', $dd_reservation);
         $stmnt->bindParam(':df_reservation', $df_reservation);
         $stmnt->bindParam(':client_id', $client_id);
         $stmnt->bindParam(':chambre_id', $chambre_id);
         $stmnt->execute();
-        $this->disconnect();
+        $stmnt = $this->disconnect();
+
+
 
 
     }
-//utlil
+
+
+    //Contrôle des réservations possible pour chaque hôtels
     public function checkReservation($id_hotel, $dd_reservation, $df_reservation)
     {
-        $this->connect();
-        $stmnt = $this->connection->prepare($this->CHECK_RESERVATION);
+        $stmnt = $this->connect()->prepare($this->CHECK_RESERVATION);
         $stmnt->bindParam(':id_hotel', $id_hotel);
         $stmnt->bindParam(':dd_reservation', $dd_reservation);
         $stmnt->bindParam(':df_reservation', $df_reservation);
@@ -244,69 +224,39 @@ class ReserManager
             }
 
         }
-        else{
-            $error = 'test not found';
-            return $error;
-
-
-        }
+        $stmnt = $this->disconnect();
 
 
     }
 
 
-
-
-    public function getReservation($id_reservation)
-    {
-        if (empty($id_reservation)) {
-            $this->connect();
-            $stmnt = $this->connection->prepare($this->GET_ALL_RESERVATION);
-        } elseif (is_numeric($id_reservation)) {
-            $stmnt = $this->connection->prepare($this->GET_RESERVATION);
-            $stmnt->bindParam(':id_reservation', $id_reservation);
-        }
-        $stmnt->execute();
-        while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $row;
-        }
-        return $result;
-    }
-
-
-    public function deleteReservation($id_reservation)
-    {
-        $this->connect();
-        $stmnt = $this->connection->prepare($this->DELETE_RESERVATION);
-        $stmnt->bindParam(':id_reservation', $id_reservation);
-        $stmnt->execute();
-        $count = $stmnt->rowCount();
-        return $count;
-    }
-//utlil
+    //Liste des chambres de libre par hôtels
     public function listHotelChambre(){
 
-        $this->connect();
-        $stmnt = $this->connection->prepare($this->LIST_HOTEL_CHAMBRES);
+        $stmnt = $this->connect()->prepare($this->LIST_HOTEL_CHAMBRES);
         $stmnt->execute();
+
     while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
         $result[] = $row;
-    }
-    return $result;
+
+    }    return $result;
+        $stmnt = $this->disconnect();
 
 }
-//util
+    //Liste tous les hôtels
     public function listHotel(){
 
         $this->connect();
-        $stmnt = $this->connection->prepare($this->LIST_HOTEL);
+        $stmnt = $this->connect()->prepare($this->LIST_HOTEL);
         $stmnt->execute();
+
         while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
         return $result;
-
+        $stmnt = $this->disconnect();
     }
+
 
 
 
@@ -343,7 +293,6 @@ class Clients
 
     }
 
-
     //Gestion des ereurs
     public function setError($msg)
     {
@@ -356,6 +305,7 @@ class Clients
     }
 
 
+    //Getter
     public function getIdClient()
     {
         return $this->_id_client;
@@ -372,8 +322,7 @@ class Clients
     }
 
 
-
-
+    //Setter
     public function setIdClient($id_client)
     {
         if (is_int($id_client) and $id_client > 0) {
@@ -413,20 +362,17 @@ class clientManager extends dbconnect
     private $ADD_CLIENT = 'INSERT INTO  clients (nom_client, email_client) VALUES (:nom_client, :email_client)';
     private $ID_CLIENT = 'SELECT id_client FROM clients WHERE email_client = :email_client';
 
-
-
-
-
-
+    //Ajout du client dans la DB
     public function addClients($nom_client,$email_client)
     {
         $stmnt = $this->connect()->prepare($this->ADD_CLIENT);
         $stmnt->bindParam(':nom_client',$nom_client);
         $stmnt->bindParam(':email_client', $email_client);
         $stmnt->execute();
+        $stmnt = $this->disconnect();
 
     }
-
+    //Check client existant par l'email
     public function getIdClient($email_client)
     {
         $stmnt = $this->connect()->prepare($this->ID_CLIENT);
@@ -434,7 +380,7 @@ class clientManager extends dbconnect
         $stmnt->execute();
         $stmnt = $stmnt->fetchall(0);
         return $stmnt;
-
+        $stmnt = $this->disconnect();
     }
 
 
@@ -466,7 +412,7 @@ class Hotels
         $this->setAdresseHotel = $data['adresse_hotel'];
 
 
-//       Accès à l'erreur via self::
+    //  Accès à l'erreur via self::
         if (!empty(self::$error)) {
             throw new Exception (self::$error . self::MSG_ERROR_END);
         }
@@ -484,7 +430,7 @@ class Hotels
         return self::$error;
     }
 
-
+    //Setter
     public function setIdHotel($id_hotel)
     {
         if (is_int($id_hotel) and $id_hotel > 0) {
@@ -513,7 +459,7 @@ class Hotels
         }
     }
 
-
+    //Getter
     public function getIdHotel()
     {
         return $this->_id_hotel;
@@ -539,17 +485,18 @@ class HotelsManager extends dbconnect
     private $LIST_HOTEL = "SELECT ho.id_hotel, ho.nom_hotel, ho.adresse_hotel, COUNT(ch.id_chambre) AS Nbre_chambre FROM  hotels ho INNER JOIN chambres ch on ho.id_hotel = ch.hotel_id
                             GROUP BY nom_hotel";
 
-
+//List des hôtels par nom_hotel
     public function listHotel()
     {
 
         $stmnt = $this->connect()->prepare($this->LIST_HOTEL);
         $stmnt->execute();
+        $stmnt = $this->disconnect();
         while ($row = $stmnt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
         return $result;
-
+        $stmnt = $this->disconnect();
     }
 
 }

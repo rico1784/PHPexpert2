@@ -47,7 +47,7 @@ require_once("Model/model.php");
     <main>
 
         <img class="ImgAccueil" src="img/hotel.jpg" alt="">
-        <h1 class="accueil">TONhotel.com</h1>
+        <h1 class="accueil mt50">TONhotel.com</h1>
         <h2 class="accueil">La recherche n°1 des hôtels</h2>
         <div class="accueil">
             <button type="button" class=" btn btn-primary"><a href="hotels.php">Liste des hôtels et chambres libres</a></button>
